@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <properties>
+        <property name="PATTERN"> [%d{yyyy-MM-dd HH:mm:ss.SSS}] [RID: %equals{%X{request_id}}{}{N/A}] [%logger{36}] [%thread] [%-5level] %msg%n</property>
+        <property name="PATTERN_K8S_ELK">{"customindex":"tequlia-${sys:spring.profiles.active}-log", "level":"%-5level", "logtime": "%d{yyyy-MM-dd'T'HH:mm:ss.SSS+08:00}", "thread":"%thread", "RID":"%X{request_id}", "TxId":"%X{PtxId}", "SpanId":"%X{PspanId}", "loggerinfo":"%replace{%msg}{(?&lt;!\\)"}{\\"}%replace{%xEx{separator(|)}}{[\t|\"]}{ }"}%n</property>
+    </properties>
+
+    <appenders>
+        <Console name="Console" target="system_out">
+            <PatternLayout pattern="${PATTERN}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="K8sLog" fileName="/data/logs/info.log" filePattern="/data/logs/info-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${PATTERN_K8S_ELK}"/>
+            <DefaultRolloverStrategy max="360"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </appenders>
+
+    <loggers>
+        <AsyncRoot level="INFO" includeLocation="true">
+            <appenderref ref="Console"/>
+            <appenderref ref="K8sLog"/>
+        </AsyncRoot>
+    </loggers>
+</configuration>
