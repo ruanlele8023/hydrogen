@@ -8,12 +8,14 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.service.annotation.GetExchange;
 
 @Configuration
 @EnableWebFlux
 public class WebFluxConfig implements WebFluxConfigurer {
 
     @Override
+    @GetExchange
     public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
         configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(ApplicationContextHolder.getBean(ObjectMapper.class)));
         configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(ApplicationContextHolder.getBean(ObjectMapper.class)));
