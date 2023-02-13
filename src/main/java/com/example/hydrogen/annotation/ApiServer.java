@@ -7,7 +7,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(BeanConfig.class)
 public @interface ApiServer {
     String value() default "";
 }
