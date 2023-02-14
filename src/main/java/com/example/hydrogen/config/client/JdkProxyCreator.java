@@ -15,6 +15,12 @@ import java.lang.reflect.Proxy;
 @Slf4j
 public class JdkProxyCreator implements ProxyCreator, EnvironmentAware {
 
+    private JdkProxyCreator() {};
+
+    public  JdkProxyCreator(Environment environment) {
+        this.environment = environment;
+    }
+
     private Environment environment;
 
     @Override
